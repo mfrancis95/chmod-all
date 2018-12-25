@@ -4,16 +4,15 @@ show_usage() {
     echo -e '  -d, --directories\tApply permissions to directories only.'
     echo -e '  -f, --files\t\tApply permissions to files only.\n'
     echo 'An omitted directory argument will default to the current working directory.'
+    exit $1
 }
 
 if [ $# -eq 0 ]; then
-    show_usage
-    exit 1
+    show_usage 1
 else
     if [ "$1" == "-d" ] || [ "$1" == "--directories" ]; then
         if [ $# -lt 2 ]; then
-            show_usage
-            exit 1
+            show_usage 1
         else
             if [ -z $3 ]; then
                 find . -type d -exec chmod $2 {} \;
@@ -23,8 +22,7 @@ else
         fi
     elif [ "$1" == "-f" ] || [ "$1" == "--files" ]; then
         if [ $# -lt 2 ]; then
-            show_usage
-            exit 1
+            show_usage 1
         else
             if [ -z $3 ]; then
                 find . -type f -exec chmod $2 {} \;
@@ -33,7 +31,7 @@ else
             fi
         fi
     elif [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
-        show_usage
+        show_usage 0
     else
         if [ -z $2 ]; then
             chmod -R $1 .
